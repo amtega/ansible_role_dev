@@ -41,8 +41,8 @@
       path: "/dev/loop{n}"
 
     dev_special_files: >-
-      {{ loop_device_pattern_present | dev_expand(n=0 | dev_to (10)) }}
-      + {{ loop_device_pattern_absent | dev_expand(n=11 | dev_to (13)) }}
+      {{ loop_device_pattern_present | dev_expand(n=0 | dev_to(10)) }}
+      + {{ loop_device_pattern_absent | dev_expand(n=11 | dev_to(13)) }}
 
   tasks:
     - name: check special files with state present
