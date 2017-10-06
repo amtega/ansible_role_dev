@@ -1,0 +1,40 @@
+---
+# Role tasks
+
+- block:
+  - name: create device special files that sould be present
+    command: >
+      mknod
+      {{ item.path }}
+      {{ item.type }}
+      {{ item.major }}
+      {{ item.minor }}
+    args:
+      creates: "{{ item.path }}"
+    register: dev_mknod_result
+    failed_when: dev_mknod_result.rc != 0
+    with_items: >-
+      {{ dev_special_files | selectattr('state', 'equalto', 'present') | list }}
+    loop_control:
+      label: "{{ item.path }}"
+
+  - name: setup special file permission bits
+    file:
+      path: "{{ item.path }}"
+      mode: "{{ item.mode }}"
+    with_items: >-
+      {{ dev_special_files | selectattr('state', 'equalto', 'present') | list }}
+    loop_control:
+      label: "{{ item.path }}"
+
+  - name: remove device special files that sould be absent
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    with_items: >-
+      {{ dev_special_files | selectattr('state', 'equalto', 'absent') | list }}
+    loop_control:
+      label: "{{ item.path }}"
+
+  tags:
+    role::dev

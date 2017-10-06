@@ -1,0 +1,22 @@
+---
+# Role default lower priority variables
+
+# List of dictionaries containing the block / character special files attributes
+# The format of the list items is:
+#
+# - state: present or absent
+#   path: the special file to create
+#   type: can be block, character, unbuffered or fifo
+#   major: major number of the special file
+#   minor: minor number of the special file
+#   mode: special file permission bits
+#
+# Sample:
+#
+# - state: present
+#   path: /dev/loop5
+#   type: block
+#   major: 7
+#   minor: 0
+
+dev_special_files: []

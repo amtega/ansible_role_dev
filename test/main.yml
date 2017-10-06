@@ -1,0 +1,92 @@
+---
+# Tasks for tesing role
+
+- name: run idempotence test
+  hosts: localhost
+  roles:
+    - role: docker_presets
+    - role: docker_sandbox
+      docker_sandbox_state: started
+      docker_provisioner_container_privileged: true
+
+- name: create some fake special device files files for later testing
+  hosts: docker_sandbox_containers
+  tasks:
+    - name: create fake special file
+      copy:
+        content: ""
+        dest: "{{ item }}"
+        force: no
+      with_items:
+        - /dev/loop11
+        - /dev/loop12
+        - /dev/loop13
+
+- name: test dev role
+  hosts: docker_sandbox_containers
+  roles:
+    - dev
+
+  vars:
+    loop_device_pattern_present:
+      state: present
+      path: "/dev/loop{n}"
+      type: block
+      major: 7
+      minor: "{n}"
+      mode: "0660"
+
+    loop_device_pattern_absent:
+      state: absent
+      path: "/dev/loop{n}"
+
+    dev_special_files: >-
+      {{ loop_device_pattern_present | dev_expand(n=0 | dev_to (10)) }}
+      + {{ loop_device_pattern_absent | dev_expand(n=11 | dev_to (13)) }}
+
+  tasks:
+    - name: check special files with state present
+      stat:
+        path: "{{ item.path }}"
+      with_items: >-
+        {{ dev_special_files
+          | selectattr('state', 'equalto', 'present') | list }}
+      register: check_present_special_files_result
+      loop_control:
+        label: "{{ item.path }}"
+
+    - name: check special files with state absent
+      stat:
+        path: "{{ item.path }}"
+      with_items: >-
+        {{ dev_special_files
+          | selectattr('state', 'equalto', 'absent') | list }}
+      register: check_absent_special_files_result
+      loop_control:
+        label: "{{ item.path }}"
+
+    - name: check that special files with state present exist
+      assert:
+        that:
+          - item.stat.exists
+          - item.stat.mode == "0660"
+      with_items: "{{ check_present_special_files_result.results }}"
+      loop_control:
+        label: "{{ item.stat.path }}"
+
+    - name: check that special files with state absent does not exist
+      assert:
+        that:
+          - not item.stat.exists
+      with_items: "{{ check_absent_special_files_result.results }}"
+      loop_control:
+        label: "{{ item.item.path }}"
+
+  tags:
+    - idempotence
+
+- name: cleanup docker docker sandbox
+  hosts: localhost
+  roles:
+    - role: docker_sandbox
+      docker_sandbox_state: absent
