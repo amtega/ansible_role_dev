@@ -7,12 +7,12 @@ from ansible.errors import AnsibleFilterError
 def dev_expand(device, **kwargs):
     """Expand special file dictionary according to the list of placeholders.
 
-    Keyword arguments:
-    device -- dict with the special file attributes
+    Args:
+        device (dict): special file attributes.
 
-    The return value will be a list of special file dictionaries as result of
-    replacing the placeholders with the specified values.
-
+    Returns:
+        list: special file dictionaries as result of replacing the placeholders
+        with the specified values.
     """
     # Prepare an empty result list structure
 
@@ -29,19 +29,18 @@ def dev_expand(device, **kwargs):
 
     return(result)
 
-
 def dev_expand_string(string, **kwargs):
     """Expand an string according to a set of placeholders and values.
 
-    Keyword arguments:
-    string -- string to expand with placeholders using this format:
+    Args:
+        string (str): string to expand with placeholders using this format:
 
               {placeholder_name}
 
-    **kwargs -- list of values to expand each placeholder.
+        **kwargs (list): values to expand each placeholder.
 
-    The return value will be a list of strings replacing the placeholders with
-    the specified values.
+    Returns:
+        list: strings replacing the placeholders with the specified values.
     """
     if not kwargs:
         expanded_values = [ string ]
@@ -66,14 +65,14 @@ def dev_expand_string(string, **kwargs):
 def dev_placeholders_len(placeholders):
     """Return the size of the placeholders values.
 
-    Keyword arguments:
-    placeholders -- dict with the following structure:
-                    { 'placeholder_name_1': [ values_for_1 ],
-                      'placeholder_name_n': [ values_for_n ]}
+    Args:
+    placeholders (dict): dict with the following structure:
+            { 'placeholder_name_1': [ values_for_1 ],
+              'placeholder_name_n': [ values_for_n ]}
 
-    The function returns the size of the placeholders values lists, that should
-    be the same for all placeholders or an AnsibleFilterError exception will be
-    raised,
+    Returns:
+        int: size of the placeholders values lists, that should be the same for
+        all placeholders or an AnsibleFilterError exception will be raised,
     """
     size = None
     for key in placeholders:
@@ -88,14 +87,14 @@ def dev_placeholders_len(placeholders):
 def dev_to(start, end, step=1):
     """Return a list of integers.
 
-    Keyword arguments:
-    start -- beginning of the integer sequence.
-    end   -- end of the integer sequence.
-    step  -- step to jump between integers of the sequence.
+    Args:
+        start (int): beginning of the integer sequence.
+        end (int): end of the integer sequence.
+        step (int): step to jump between integers of the sequence.
 
-    Note that both extremes (start and end) are included on the returned
-    sequence.
-
+    Returns:
+        list: sequencie of integers with the specified step. Both extremes
+        (start and end) are included.
     """
     return range(start, end + 1, step)
 
