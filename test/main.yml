@@ -25,7 +25,7 @@
 - name: test dev role
   hosts: docker_sandbox_containers
   roles:
-    - dev
+    - amtega.dev
   vars:
     loop_device_pattern_present:
       state: present
