@@ -5,13 +5,13 @@ __metaclass__ = type
 from ansible.errors import AnsibleFilterError
 
 def dev_expand(device, **kwargs):
-    """Expand special file dictionary according to the list of placeholders.
+    """Expand special file dict according to the list of placeholders.
 
     Args:
         device (dict): special file attributes.
 
     Returns:
-        list: special file dictionaries as result of replacing the placeholders
+        list: special file dicts as result of replacing the placeholders
         with the specified values.
     """
     # Prepare an empty result list structure
@@ -66,20 +66,21 @@ def dev_placeholders_len(placeholders):
     """Return the size of the placeholders values.
 
     Args:
-    placeholders (dict): dict with the following structure:
+        placeholders (dict): dict with the following structure:
             { 'placeholder_name_1': [ values_for_1 ],
               'placeholder_name_n': [ values_for_n ]}
 
     Returns:
-        int: size of the placeholders values lists, that should be the same for
-        all placeholders or an AnsibleFilterError exception will be raised,
+        int: size of the placeholders values lists, that should be the same
+        for all placeholders or an AnsibleFilterError exception will be
+        raised.
     """
     size = None
     for key in placeholders:
         if size and size != len(placeholders[key]):
             raise AnsibleFilterError(
                 'Placeholder lists must have the same size ('
-                    + str(placeholders) + ')')
+                + str(placeholders) + ')')
         else:
             size = len(placeholders[key])
     return size

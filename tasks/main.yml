@@ -14,7 +14,9 @@
     register: dev_mknod_result
     failed_when: dev_mknod_result.rc != 0
     with_items: >-
-      {{ dev_special_files | selectattr('state', 'equalto', 'present') | list }}
+      {{ dev_special_files
+         | selectattr('state', 'equalto', 'present')
+         | list }}
     loop_control:
       label: "{{ item.path }}"
 
@@ -23,7 +25,9 @@
       path: "{{ item.path }}"
       mode: "{{ item.mode }}"
     with_items: >-
-      {{ dev_special_files | selectattr('state', 'equalto', 'present') | list }}
+      {{ dev_special_files
+         | selectattr('state', 'equalto', 'present')
+         | list }}
     loop_control:
       label: "{{ item.path }}"
 
@@ -32,7 +36,9 @@
       path: "{{ item.path }}"
       state: absent
     with_items: >-
-      {{ dev_special_files | selectattr('state', 'equalto', 'absent') | list }}
+      {{ dev_special_files
+         | selectattr('state', 'equalto', 'absent')
+         | list }}
     loop_control:
       label: "{{ item.path }}"
 
