@@ -4,8 +4,8 @@
 - name: run idempotence test
   hosts: localhost
   roles:
-    - role: docker_presets
-    - role: docker_sandbox
+    - role: amtega.docker_presets
+    - role: amtega.docker_sandbox
       docker_sandbox_state: started
       docker_provisioner_container_privileged: true
 
@@ -26,7 +26,6 @@
   hosts: docker_sandbox_containers
   roles:
     - dev
-
   vars:
     loop_device_pattern_present:
       state: present
@@ -50,7 +49,7 @@
         path: "{{ item.path }}"
       with_items: >-
         {{ dev_special_files
-          | selectattr('state', 'equalto', 'present') | list }}
+           | selectattr('state', 'equalto', 'present') | list }}
       register: check_present_special_files_result
       loop_control:
         label: "{{ item.path }}"
@@ -60,7 +59,7 @@
         path: "{{ item.path }}"
       with_items: >-
         {{ dev_special_files
-          | selectattr('state', 'equalto', 'absent') | list }}
+           | selectattr('state', 'equalto', 'absent') | list }}
       register: check_absent_special_files_result
       loop_control:
         label: "{{ item.path }}"
@@ -88,5 +87,5 @@
 - name: cleanup docker docker sandbox
   hosts: localhost
   roles:
-    - role: docker_sandbox
+    - role: amtega.docker_sandbox
       docker_sandbox_state: absent
