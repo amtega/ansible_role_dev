@@ -30,7 +30,7 @@ This is an example playbook tall will create loop devices from `/dev/loop0` to `
 ---
 - hosts: all
   roles:
-    - dev
+    - amtega.dev
   vars:
     loop_device_pattern_present:
       state: present
@@ -54,14 +54,14 @@ This is an example playbook tall will create loop devices from `/dev/loop0` to `
 Test are based on docker containers. You can run the tests with the following commands:
 
 ```shell
-$ cd dev/test
+$ cd amtega.dev/test
 $ ansible-playbook main.yml
 ```
 
 If you have docker engine configured you can avoid running dependant 'docker_engine' role (that usually requries root privileges) with the following commands:
 
 ```shell
-$ cd dev/test
+$ cd amtega.dev/test
 $ ansible-playbook --skip-tags "role::docker_engine" main.yml
 ```
 
