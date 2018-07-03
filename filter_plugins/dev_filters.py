@@ -83,7 +83,7 @@ def dev_placeholders_len(placeholders):
         if size and size != len(placeholders[key]):
             raise AnsibleFilterError(
                 'Placeholder lists must have the same size ('
-                + str(placeholders) + ')')
+                + str(placeholders) + ')')  # noqa: W503
         else:
             size = len(placeholders[key])
     return size
