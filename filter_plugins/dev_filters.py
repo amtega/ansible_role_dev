@@ -4,6 +4,7 @@ __metaclass__ = type
 
 from ansible.errors import AnsibleFilterError
 
+
 def dev_expand(device, **kwargs):
     """Expand special file dict according to the list of placeholders.
 
@@ -29,6 +30,7 @@ def dev_expand(device, **kwargs):
 
     return(result)
 
+
 def dev_expand_string(string, **kwargs):
     """Expand an string according to a set of placeholders and values.
 
@@ -43,7 +45,7 @@ def dev_expand_string(string, **kwargs):
         list: strings replacing the placeholders with the specified values.
     """
     if not kwargs:
-        expanded_values = [ string ]
+        expanded_values = [string]
     else:
         expanded_values = list()
         format_args = list()
@@ -52,15 +54,16 @@ def dev_expand_string(string, **kwargs):
         for key in kwargs:
             for i in range(size):
                 if i >= len(format_args):
-                    format_args.append({ key: kwargs[key][i] })
+                    format_args.append({key: kwargs[key][i]})
                 else:
-                    format_args[i].update({ key: kwargs[key][i] })
+                    format_args[i].update({key: kwargs[key][i]})
 
         for i in range(size):
             formatted_value = str(string).format(**format_args[i])
             expanded_values.append(formatted_value)
 
     return expanded_values
+
 
 def dev_placeholders_len(placeholders):
     """Return the size of the placeholders values.
@@ -85,6 +88,7 @@ def dev_placeholders_len(placeholders):
             size = len(placeholders[key])
     return size
 
+
 def dev_to(start, end, step=1):
     """Return a list of integers.
 
@@ -98,6 +102,7 @@ def dev_to(start, end, step=1):
         (start and end) are included.
     """
     return range(start, end + 1, step)
+
 
 class FilterModule(object):
     """Ansible be_dell filters"""
