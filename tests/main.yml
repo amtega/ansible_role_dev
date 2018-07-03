@@ -5,9 +5,17 @@
   hosts: localhost
   roles:
     - role: amtega.docker_presets
+      docker_presets_images_json_query: >-
+        [? starts_with(name, `centos-6`)
+           || starts_with(name, `centos-7`)
+           || starts_with(name, `fedora-27`)
+           || starts_with(name, `fedora-28`) ]
+
     - role: amtega.docker_sandbox
       docker_sandbox_state: started
       docker_provisioner_container_privileged: true
+  tags:
+    - sandbox
 
 - name: create some fake special device files files for later testing
   hosts: docker_sandbox_containers
@@ -17,10 +25,12 @@
         content: ""
         dest: "{{ item }}"
         force: no
-      with_items:
+      loop:
         - /dev/loop11
         - /dev/loop12
         - /dev/loop13
+  tags:
+    - prepare
 
 - name: test dev role
   hosts: docker_sandbox_containers
@@ -47,7 +57,7 @@
     - name: check special files with state present
       stat:
         path: "{{ item.path }}"
-      with_items: >-
+      loop: >-
         {{ dev_special_files
            | selectattr('state', 'equalto', 'present') | list }}
       register: check_present_special_files_result
@@ -57,7 +67,7 @@
     - name: check special files with state absent
       stat:
         path: "{{ item.path }}"
-      with_items: >-
+      loop: >-
         {{ dev_special_files
            | selectattr('state', 'equalto', 'absent') | list }}
       register: check_absent_special_files_result
@@ -69,7 +79,7 @@
         that:
           - item.stat.exists
           - item.stat.mode == "0660"
-      with_items: "{{ check_present_special_files_result.results }}"
+      loop: "{{ check_present_special_files_result.results }}"
       loop_control:
         label: "{{ item.stat.path }}"
 
@@ -77,7 +87,7 @@
       assert:
         that:
           - not item.stat.exists
-      with_items: "{{ check_absent_special_files_result.results }}"
+      loop: "{{ check_absent_special_files_result.results }}"
       loop_control:
         label: "{{ item.item.path }}"
 
