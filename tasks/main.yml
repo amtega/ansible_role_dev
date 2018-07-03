@@ -13,7 +13,7 @@
         creates: "{{ item.path }}"
       register: dev_mknod_result
       failed_when: dev_mknod_result.rc != 0
-      with_items: >-
+      loop: >-
         {{ dev_special_files
            | selectattr('state', 'equalto', 'present')
            | list }}
@@ -24,7 +24,7 @@
       file:
         path: "{{ item.path }}"
         mode: "{{ item.mode }}"
-      with_items: >-
+      loop: >-
         {{ dev_special_files
            | selectattr('state', 'equalto', 'present')
            | list }}
@@ -35,7 +35,7 @@
       file:
         path: "{{ item.path }}"
         state: absent
-      with_items: >-
+      loop: >-
         {{ dev_special_files
            | selectattr('state', 'equalto', 'absent')
            | list }}
