@@ -4,7 +4,7 @@ This is an [Ansible](http://www.ansible.com) role which manages device special f
 
 ## Requirements
 
-- Ansible >= 2.4
+[Ansible 2.5+](http://docs.ansible.com/ansible/latest/intro_installation.html)
 
 ## Role Variables
 
@@ -19,8 +19,7 @@ The role provides these filters to manipulate the provided presets:
 
 ## Dependencies
 
-- amtega.docker_presets (for testing only)
-- amtega.docker_sandbox (for testing only)
+None.
 
 ## Example Playbook
 
@@ -51,14 +50,9 @@ This is an example playbook tall will create loop devices from `/dev/loop0` to `
 
 ## Testing
 
-Test are based on docker containers. You can run the tests with the following commands:
+Tests are based on docker containers. You can setup docker engine quickly using the playbook `files/setup.yml` available in the role [amtega.docker_engine](https://galaxy.ansible.com/amtega/docker_engine).
 
-```shell
-$ cd amtega.dev/tests
-$ ansible-playbook main.yml
-```
-
-If you have docker engine configured you can avoid running dependant 'docker_engine' role (that usually requries root privileges) with the following commands:
+Once you have docker, you can run the tests with the following commands:
 
 ```shell
 $ cd amtega.dev/tests
