@@ -2,6 +2,7 @@
 # Role dependencies
 
 galaxy_info:
+  role_name: dev
   author: Juan Antonio Valiño García
   description: Setup device special files
   company: AMTEGA - Xunta de Galicia
