@@ -17,10 +17,10 @@
   tags:
     - sandbox
 
-- name: create some fake special device files files for later testing
+- name: Create some fake special device files files for later testing
   hosts: docker_sandbox_containers
   tasks:
-    - name: create fake special file
+    - name: Create fake special file
       copy:
         content: ""
         dest: "{{ item }}"
@@ -32,7 +32,7 @@
   tags:
     - prepare
 
-- name: test dev role
+- name: Test dev role
   hosts: docker_sandbox_containers
   roles:
     - amtega.dev
@@ -54,7 +54,7 @@
       + {{ loop_device_pattern_absent | dev_expand(n=11 | dev_to(13)) }}
 
   tasks:
-    - name: check special files with state present
+    - name: Check special files with state present
       stat:
         path: "{{ item.path }}"
       loop: >-
@@ -64,7 +64,7 @@
       loop_control:
         label: "{{ item.path }}"
 
-    - name: check special files with state absent
+    - name: Check special files with state absent
       stat:
         path: "{{ item.path }}"
       loop: >-
@@ -74,7 +74,7 @@
       loop_control:
         label: "{{ item.path }}"
 
-    - name: check that special files with state present exist
+    - name: Check that special files with state present exist
       assert:
         that:
           - item.stat.exists
@@ -83,7 +83,7 @@
       loop_control:
         label: "{{ item.stat.path }}"
 
-    - name: check that special files with state absent does not exist
+    - name: Check that special files with state absent does not exist
       assert:
         that:
           - not item.stat.exists
