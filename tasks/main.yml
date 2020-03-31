@@ -2,7 +2,7 @@
 # Role tasks
 
 - block:
-    - name: create device special files that sould be present
+    - name: Create device special files that sould be present
       command: >
         mknod
         {{ item.path }}
@@ -20,7 +20,7 @@
       loop_control:
         label: "{{ item.path }}"
 
-    - name: setup special file permission bits
+    - name: Setup special file permission bits
       file:
         path: "{{ item.path }}"
         mode: "{{ item.mode }}"
@@ -31,7 +31,7 @@
       loop_control:
         label: "{{ item.path }}"
 
-    - name: remove device special files that sould be absent
+    - name: Remove device special files that sould be absent
       file:
         path: "{{ item.path }}"
         state: absent
