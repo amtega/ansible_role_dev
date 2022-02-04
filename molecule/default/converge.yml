@@ -1,0 +1,13 @@
+---
+
+- name: Converge
+  hosts: molecule_hosts
+  gather_facts: no
+  roles:
+    - amtega.dev
+  tasks:
+    - name: Save special files for later verification
+      copy:
+        content: "{{ dev_special_files }}"
+        dest: /tmp/dev_special_files
+        mode: 0640

@@ -3,16 +3,17 @@
 
 galaxy_info:
   role_name: dev
+  namespace: amtega
   author: Juan Antonio Valiño García
   description: Setup device special files
   company: AMTEGA - Xunta de Galicia
   license: GPLv3 or EUPL
-  min_ansible_version: 2.9
+  min_ansible_version: 2.10
   platforms:
   - name: Fedora
     versions:
-      - 29
-      - 30
+      - 34
+      - 35
   - name: EL
     versions:
       - 6
