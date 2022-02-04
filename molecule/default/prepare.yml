@@ -1,0 +1,16 @@
+---
+
+- name: Prepare
+  hosts: molecule_hosts
+  gather_facts: no
+  tasks:
+    - name: Create fake special files
+      copy:
+        content: ""
+        dest: "{{ item }}"
+        force: no
+        mode: 0640
+      loop:
+        - /dev/loop11
+        - /dev/loop12
+        - /dev/loop13
