@@ -1,0 +1,53 @@
+---
+
+- name: Verify
+  hosts: molecule_hosts
+  gather_facts: no
+  tasks:
+    - name: Read file with special files created
+      command: cat /tmp/dev_special_files
+      changed_when: no
+      register: read_file_result
+
+    - name: Setup fact with special files
+      set_fact:
+        dev_special_files: "{{ read_file_result.stdout | from_yaml }}"
+
+    - name: Check special files with state present
+      stat:
+        path: "{{ item.path }}"
+      loop: >-
+        {{ dev_special_files
+           | selectattr('state', 'equalto', 'present') | list }}
+      register: check_present_special_files_result
+      loop_control:
+        label: "{{ item.path }}"
+
+    - name: Check special files with state absent
+      stat:
+        path: "{{ item.path }}"
+      loop: >-
+        {{ dev_special_files
+           | selectattr('state', 'equalto', 'absent') | list }}
+      register: check_absent_special_files_result
+      loop_control:
+        label: "{{ item.path }}"
+
+    - name: Check that special files with state present exist
+      assert:
+        quiet: yes
+        that:
+          - item.stat.exists
+          - item.stat.mode == "0660"
+      loop: "{{ check_present_special_files_result.results }}"
+      loop_control:
+        label: "{{ item.stat.path }}"
+
+    - name: Check that special files with state absent does not exist
+      assert:
+        quiet: yes
+        that:
+          - not item.stat.exists
+      loop: "{{ check_absent_special_files_result.results }}"
+      loop_control:
+        label: "{{ item.item.path }}"
