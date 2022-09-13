@@ -7,7 +7,7 @@
     - amtega.dev
   tasks:
     - name: Save special files for later verification
-      copy:
+      ansible.builtin.copy:
         content: "{{ dev_special_files }}"
         dest: /tmp/dev_special_files
         mode: 0640

@@ -1,5 +1,4 @@
 ---
-# Role dependencies
 
 galaxy_info:
   role_name: dev
@@ -8,16 +7,16 @@ galaxy_info:
   description: Setup device special files
   company: AMTEGA - Xunta de Galicia
   license: GPLv3 or EUPL
-  min_ansible_version: 2.10
+  min_ansible_version: "2.10"
   platforms:
-  - name: Fedora
-    versions:
-      - 34
-      - 35
-  - name: EL
-    versions:
-      - 6
-      - 7
+    - name: Fedora
+      versions:
+        - "34"
+        - "35"
+    - name: EL
+      versions:
+        - "6"
+        - "7"
   galaxy_tags:
     - system
 
