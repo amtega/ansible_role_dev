@@ -1,9 +1,9 @@
 ---
-# Role tasks
 
-- block:
+- name: Setup devices
+  block:
     - name: Create device special files that sould be present
-      command: >
+      ansible.builtin.command: >
         mknod
         {{ item.path }}
         {{ item.type }}
@@ -21,7 +21,7 @@
         label: "{{ item.path }}"
 
     - name: Setup special file permission bits
-      file:
+      ansible.builtin.file:
         path: "{{ item.path }}"
         mode: "{{ item.mode }}"
       loop: >-
@@ -32,7 +32,7 @@
         label: "{{ item.path }}"
 
     - name: Remove device special files that sould be absent
-      file:
+      ansible.builtin.file:
         path: "{{ item.path }}"
         state: absent
       loop: >-
