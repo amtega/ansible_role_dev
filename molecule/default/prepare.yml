@@ -5,7 +5,7 @@
   gather_facts: no
   tasks:
     - name: Create fake special files
-      copy:
+      ansible.builtin.copy:
         content: ""
         dest: "{{ item }}"
         force: no

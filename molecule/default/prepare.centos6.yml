@@ -5,7 +5,7 @@
   gather_facts: no
   tasks:
     - name: Disable repos mirror list
-      replace:
+      ansible.builtin.replace:
         path: "/etc/yum.repos.d/{{ repo_file }}"
         regexp: "(^mirrorlist=.*)"
         replace: "#\\1"
@@ -14,7 +14,7 @@
         loop_var: repo_file
 
     - name: Point repos to vault
-      replace:
+      ansible.builtin.replace:
         path: "/etc/yum.repos.d/{{ repo_file }}"
         regexp: "#baseurl=http://mirror.centos.org/"
         replace: "baseurl=http://vault.centos.org/"

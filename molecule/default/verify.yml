@@ -5,16 +5,16 @@
   gather_facts: no
   tasks:
     - name: Read file with special files created
-      command: cat /tmp/dev_special_files
+      ansible.builtin.command: cat /tmp/dev_special_files
       changed_when: no
       register: read_file_result
 
     - name: Setup fact with special files
-      set_fact:
+      ansible.builtin.set_fact:
         dev_special_files: "{{ read_file_result.stdout | from_yaml }}"
 
     - name: Check special files with state present
-      stat:
+      ansible.builtin.stat:
         path: "{{ item.path }}"
       loop: >-
         {{ dev_special_files
@@ -24,7 +24,7 @@
         label: "{{ item.path }}"
 
     - name: Check special files with state absent
-      stat:
+      ansible.builtin.stat:
         path: "{{ item.path }}"
       loop: >-
         {{ dev_special_files
@@ -34,7 +34,7 @@
         label: "{{ item.path }}"
 
     - name: Check that special files with state present exist
-      assert:
+      ansible.builtin.assert:
         quiet: yes
         that:
           - item.stat.exists
@@ -44,7 +44,7 @@
         label: "{{ item.stat.path }}"
 
     - name: Check that special files with state absent does not exist
-      assert:
+      ansible.builtin.assert:
         quiet: yes
         that:
           - not item.stat.exists
